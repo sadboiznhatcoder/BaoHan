@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import FloatingLoveText from './FloatingLoveText';
 
 const CUTE_ERRORS = [
   'Sai rồi bé ơi~ Thử lại nha 🥺💕',
@@ -95,6 +96,9 @@ export default function AuthForm({ onSuccess, onFail }) {
           background: 'linear-gradient(135deg, #1a0011 0%, #2d0a1f 30%, #1a0025 60%, #0d001a 100%)',
         }}
       />
+
+      {/* Floating love text background */}
+      <FloatingLoveText baseOpacity={0.5} zIndex={8} />
 
       {/* Ambient orbs */}
       <motion.div
@@ -218,7 +222,7 @@ export default function AuthForm({ onSuccess, onFail }) {
             transition={{ delay: 0.5 }}
           >
             <label className="block text-sm font-medium text-pink-300/80 mb-1.5">
-              🏠 Tên gọi ở nhà?
+              🏠 Tên gọi ở nhà? <span className="text-xs text-pink-300/50 font-normal">(ghi hoa không dấu)</span>
             </label>
             <input
               type="text"
@@ -238,7 +242,7 @@ export default function AuthForm({ onSuccess, onFail }) {
             transition={{ delay: 0.6 }}
           >
             <label className="block text-sm font-medium text-pink-300/80 mb-1.5">
-              👑 Ai đẹp trai nhất thế giới?
+              👑 Ai đẹp trai nhất thế giới? <span className="text-xs text-pink-300/50 font-normal">(cả họ và tên ghi hoa không dấu)</span>
             </label>
             <input
               type="text"

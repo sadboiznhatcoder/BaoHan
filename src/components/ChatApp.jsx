@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendMessage, streamResponse } from '../services/groqApi';
+import FloatingLoveText from './FloatingLoveText';
 
 function TypingIndicator() {
   return (
@@ -158,6 +159,9 @@ export default function ChatApp() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
+      {/* Faint dreamy floating text watermark */}
+      <FloatingLoveText baseOpacity={0.08} zIndex={1} />
+
       {/* Header */}
       <motion.div
         className="flex-shrink-0 glass px-4 sm:px-6 py-3 flex items-center justify-between"

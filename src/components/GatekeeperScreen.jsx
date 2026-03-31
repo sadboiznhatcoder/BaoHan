@@ -1,98 +1,6 @@
-import { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import FloatingLoveText from './FloatingLoveText';
 
-// ─── Phrase pool ─────────────────────────────────────────────────
-const PHRASES = [
-  'anh yêu mỗi Bảo Hân đó',
-  'Tina của anh',
-  'Bảo Hân xinh nhất',
-  'Yêu Tina nhất trên đời',
-];
-
-// ─── Deterministic seeded random ─────────────────────────────────
-function sr(seed) {
-  const x = Math.sin(seed * 9301 + 49297) * 49297;
-  return x - Math.floor(x);
-}
-
-// ─── Pre-compute 150 items at module level (zero runtime cost) ───
-const COUNT = 150;
-const ITEMS = Array.from({ length: COUNT }, (_, i) => ({
-  id: i,
-  text: PHRASES[i % PHRASES.length],
-  left: `${sr(i * 7) * 100}%`,
-  fontSize: `${13 + sr(i * 7 + 1) * 16}px`,
-  opacity: 0.2 + sr(i * 7 + 2) * 0.4,          // 0.2 → 0.6
-  duration: `${10 + sr(i * 7 + 3) * 15}s`,      // 10s → 25s
-  delay: `${-(sr(i * 7 + 4) * 20)}s`,           // -20s → 0s (pre-spread)
-  hue: 320 + sr(i * 7 + 5) * 40,
-  lightness: 65 + sr(i * 7 + 6) * 25,
-}));
-
-// ─── CSS injected once ───────────────────────────────────────────
-const CSS = `
-@keyframes gk-rise {
-  from { transform: translate3d(0, 110vh, 0); }
-  to   { transform: translate3d(0, -20vh, 0); }
-}
-.gk-layer {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 8;
-  contain: strict;
-}
-.gk-item {
-  position: absolute;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-  will-change: transform, opacity;
-  font-family: 'Dancing Script', cursive;
-  text-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
-  animation: gk-rise var(--dur) linear var(--del) infinite;
-}
-`;
-
-let injected = false;
-function injectCSS() {
-  if (injected) return;
-  injected = true;
-  const s = document.createElement('style');
-  s.textContent = CSS;
-  document.head.appendChild(s);
-}
-
-// ─── Pure-DOM floating layer (zero re-renders) ───────────────────
-function FloatingTextLayer() {
-  useMemo(() => injectCSS(), []);
-
-  const els = useMemo(
-    () =>
-      ITEMS.map((it) => (
-        <div
-          key={it.id}
-          className="gk-item"
-          style={{
-            left: it.left,
-            fontSize: it.fontSize,
-            opacity: it.opacity,
-            color: `hsl(${it.hue}, 80%, ${it.lightness}%)`,
-            '--dur': it.duration,
-            '--del': it.delay,
-          }}
-        >
-          {it.text}
-        </div>
-      )),
-    []
-  );
-
-  return <div className="gk-layer">{els}</div>;
-}
-
-// ─── Main Component ──────────────────────────────────────────────
 export default function GatekeeperScreen({ onYes, onNo }) {
   return (
     <motion.div
@@ -140,10 +48,10 @@ export default function GatekeeperScreen({ onYes, onNo }) {
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* ★ 150 GPU-accelerated floating text elements (pure CSS) */}
-      <FloatingTextLayer />
+      {/* ★ Full-intensity floating love text */}
+      <FloatingLoveText baseOpacity={1.0} zIndex={8} />
 
-      {/* ── Central modal (high z-index + glassmorphism) ── */}
+      {/* Central modal */}
       <motion.div
         className="relative rounded-3xl p-8 sm:p-10 mx-4 max-w-md w-full text-center"
         style={{
@@ -159,7 +67,6 @@ export default function GatekeeperScreen({ onYes, onNo }) {
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: 'spring', damping: 15, stiffness: 200, delay: 0.3 }}
       >
-        {/* Decorative heart */}
         <motion.div
           className="absolute -top-6 left-1/2 text-4xl"
           style={{ transform: 'translateX(-50%)' }}
