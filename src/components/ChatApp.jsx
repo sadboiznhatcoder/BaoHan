@@ -86,25 +86,21 @@ export default function ChatApp() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState('');
-  const [showApiInput, setShowApiInput] = useState(true);
+  const [apiKey] = useState(import.meta.env.VITE_GROQ_API_KEY || '');
   const [error, setError] = useState('');
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
+    setMessages([{
+      role: 'assistant',
+      content: 'Xin chào Bảo Hân iu! 💕🌸\n\nEm là trợ lý AI được tạo bởi Nhật - người yêu em nhất thế giới đó~ Hỏi gì em cũng trả lời nhaa! ✨💖',
+    }]);
+  }, []);
+
+  useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
-
-  const handleApiKeySubmit = () => {
-    if (apiKey.trim()) {
-      setShowApiInput(false);
-      setMessages([{
-        role: 'assistant',
-        content: 'Xin chào Bảo Hân iu! 💕🌸\n\nEm là trợ lý AI được tạo bởi Nhật - người yêu em nhất thế giới đó~ Hỏi gì em cũng trả lời nhaa! ✨💖',
-      }]);
-    }
-  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -151,100 +147,6 @@ export default function ChatApp() {
       handleSend();
     }
   };
-
-  // API Key input screen
-  if (showApiInput) {
-    return (
-      <motion.div
-        className="fixed inset-0 flex items-center justify-center p-4"
-        style={{ zIndex: 50 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, #1a0011 0%, #2d0a1f 30%, #1a0025 60%, #0d001a 100%)',
-          }}
-        />
-
-        <motion.div
-          className="relative glass-strong rounded-3xl p-8 max-w-md w-full text-center"
-          style={{
-            boxShadow: '0 0 60px rgba(244, 63, 94, 0.15)',
-            zIndex: 51,
-          }}
-          initial={{ scale: 0.8, y: 30 }}
-          animate={{ scale: 1, y: 0 }}
-          transition={{ type: 'spring', damping: 20 }}
-        >
-          <motion.div
-            className="text-5xl mb-4"
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            🔑
-          </motion.div>
-
-          <h2
-            className="text-2xl font-bold mb-2"
-            style={{
-              fontFamily: "'Dancing Script', cursive",
-              background: 'linear-gradient(135deg, #f9a8d4, #f472b6)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            Chào mừng Bảo Hân! 💕
-          </h2>
-
-          <p className="text-white/50 text-sm mb-6">
-            Nhập Groq API Key để bắt đầu trò chuyện nhaa~
-          </p>
-
-          <input
-            type="password"
-            value={apiKey}
-            onChange={e => setApiKey(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleApiKeySubmit()}
-            placeholder="gsk_..."
-            className="w-full px-4 py-3.5 rounded-xl text-base mb-4 focus:ring-2 focus:ring-pink-400/30 transition-all"
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              color: 'white',
-              outline: 'none',
-            }}
-          />
-
-          <motion.button
-            onClick={handleApiKeySubmit}
-            className="w-full py-3.5 rounded-2xl text-lg font-semibold text-white cursor-pointer"
-            style={{
-              background: 'linear-gradient(135deg, #ec4899, #f43f5e)',
-              boxShadow: '0 4px 20px rgba(244, 63, 94, 0.4)',
-            }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Bắt đầu chat 💬✨
-          </motion.button>
-
-          <p className="text-white/30 text-xs mt-3">
-            Lấy API key miễn phí tại{' '}
-            <a
-              href="https://console.groq.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-pink-400/60 underline"
-            >
-              console.groq.com
-            </a>
-          </p>
-        </motion.div>
-      </motion.div>
-    );
-  }
 
   return (
     <motion.div

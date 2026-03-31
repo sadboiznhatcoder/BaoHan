@@ -1,56 +1,98 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
 
-const FLOATING_TEXTS = [
-  'anh yêu mỗi Bảo Hân đó 💕',
-  'iu Bảo Hân nhất 💖',
-  'Bảo Hân là nhất 🌸',
-  'yêu Tina nhiều lắm 💗',
-  'mãi yêu Bảo Hân 💘',
-  'Tina iu ơi 🩷',
-  'nhớ Bảo Hân quá 💝',
-  'Bảo Hân xinh nhất 🌺',
-  'iu em mãi mãi ✨',
-  'anh yêu mỗi Bảo Hân đó 💕',
-  'iu Bảo Hân nhất 💖',
+// ─── Phrase pool ─────────────────────────────────────────────────
+const PHRASES = [
+  'anh yêu mỗi Bảo Hân đó',
+  'Tina của anh',
+  'Bảo Hân xinh nhất',
+  'Yêu Tina nhất trên đời',
 ];
 
-function FloatingText({ text, index, total }) {
-  const yPos = 5 + (index / total) * 85;
-  const startX = Math.random() > 0.5 ? -200 : window.innerWidth + 200;
-  const endX = startX > 0 ? -300 : window.innerWidth + 300;
-  const duration = 12 + Math.random() * 10;
-  const delay = index * 1.5 + Math.random() * 3;
-
-  return (
-    <motion.div
-      className="fixed pointer-events-none select-none whitespace-nowrap"
-      style={{
-        top: `${yPos}%`,
-        fontFamily: "'Dancing Script', cursive",
-        fontSize: `${16 + Math.random() * 14}px`,
-        color: `hsl(${330 + Math.random() * 30}, 80%, ${70 + Math.random() * 20}%)`,
-        textShadow: '0 0 15px rgba(244, 63, 94, 0.5)',
-        zIndex: 8,
-      }}
-      initial={{ x: startX, opacity: 0 }}
-      animate={{
-        x: [startX, endX],
-        opacity: [0, 0.7, 0.8, 0.7, 0],
-        y: [0, -15, 5, -10, 0],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: 'linear',
-      }}
-    >
-      {text}
-    </motion.div>
-  );
+// ─── Deterministic seeded random ─────────────────────────────────
+function sr(seed) {
+  const x = Math.sin(seed * 9301 + 49297) * 49297;
+  return x - Math.floor(x);
 }
 
+// ─── Pre-compute 150 items at module level (zero runtime cost) ───
+const COUNT = 150;
+const ITEMS = Array.from({ length: COUNT }, (_, i) => ({
+  id: i,
+  text: PHRASES[i % PHRASES.length],
+  left: `${sr(i * 7) * 100}%`,
+  fontSize: `${13 + sr(i * 7 + 1) * 16}px`,
+  opacity: 0.2 + sr(i * 7 + 2) * 0.4,          // 0.2 → 0.6
+  duration: `${10 + sr(i * 7 + 3) * 15}s`,      // 10s → 25s
+  delay: `${-(sr(i * 7 + 4) * 20)}s`,           // -20s → 0s (pre-spread)
+  hue: 320 + sr(i * 7 + 5) * 40,
+  lightness: 65 + sr(i * 7 + 6) * 25,
+}));
+
+// ─── CSS injected once ───────────────────────────────────────────
+const CSS = `
+@keyframes gk-rise {
+  from { transform: translate3d(0, 110vh, 0); }
+  to   { transform: translate3d(0, -20vh, 0); }
+}
+.gk-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 8;
+  contain: strict;
+}
+.gk-item {
+  position: absolute;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+  animation: gk-rise var(--dur) linear var(--del) infinite;
+}
+`;
+
+let injected = false;
+function injectCSS() {
+  if (injected) return;
+  injected = true;
+  const s = document.createElement('style');
+  s.textContent = CSS;
+  document.head.appendChild(s);
+}
+
+// ─── Pure-DOM floating layer (zero re-renders) ───────────────────
+function FloatingTextLayer() {
+  useMemo(() => injectCSS(), []);
+
+  const els = useMemo(
+    () =>
+      ITEMS.map((it) => (
+        <div
+          key={it.id}
+          className="gk-item"
+          style={{
+            left: it.left,
+            fontSize: it.fontSize,
+            opacity: it.opacity,
+            color: `hsl(${it.hue}, 80%, ${it.lightness}%)`,
+            '--dur': it.duration,
+            '--del': it.delay,
+          }}
+        >
+          {it.text}
+        </div>
+      )),
+    []
+  );
+
+  return <div className="gk-layer">{els}</div>;
+}
+
+// ─── Main Component ──────────────────────────────────────────────
 export default function GatekeeperScreen({ onYes, onNo }) {
   return (
     <motion.div
@@ -65,11 +107,12 @@ export default function GatekeeperScreen({ onYes, onNo }) {
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(135deg, #1a0011 0%, #2d0a1f 30%, #1a0025 60%, #0d001a 100%)',
+          background:
+            'linear-gradient(135deg, #1a0011 0%, #2d0a1f 30%, #1a0025 60%, #0d001a 100%)',
         }}
       />
 
-      {/* Animated background orbs */}
+      {/* Ambient orbs */}
       <motion.div
         className="absolute rounded-full"
         style={{
@@ -97,23 +140,26 @@ export default function GatekeeperScreen({ onYes, onNo }) {
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Floating romantic texts */}
-      {FLOATING_TEXTS.map((text, i) => (
-        <FloatingText key={i} text={text} index={i} total={FLOATING_TEXTS.length} />
-      ))}
+      {/* ★ 150 GPU-accelerated floating text elements (pure CSS) */}
+      <FloatingTextLayer />
 
-      {/* Central modal */}
+      {/* ── Central modal (high z-index + glassmorphism) ── */}
       <motion.div
-        className="relative glass-strong rounded-3xl p-8 sm:p-10 mx-4 max-w-md w-full text-center"
+        className="relative rounded-3xl p-8 sm:p-10 mx-4 max-w-md w-full text-center"
         style={{
-          boxShadow: '0 0 60px rgba(244, 63, 94, 0.2), 0 20px 60px rgba(0,0,0,0.4)',
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          boxShadow:
+            '0 0 60px rgba(244, 63, 94, 0.2), 0 20px 60px rgba(0,0,0,0.4)',
           zIndex: 60,
         }}
         initial={{ scale: 0, rotate: -5 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: 'spring', damping: 15, stiffness: 200, delay: 0.3 }}
       >
-        {/* Decorative hearts */}
+        {/* Decorative heart */}
         <motion.div
           className="absolute -top-6 left-1/2 text-4xl"
           style={{ transform: 'translateX(-50%)' }}
@@ -138,7 +184,8 @@ export default function GatekeeperScreen({ onYes, onNo }) {
         </motion.h2>
 
         <p className="text-white/80 text-lg sm:text-xl mb-8 mt-4 font-medium">
-          Bạn có phải <span style={{ color: '#f9a8d4' }}>Bảo Hân</span> không? 🤔
+          Bạn có phải{' '}
+          <span style={{ color: '#f9a8d4' }}>Bảo Hân</span> không? 🤔
         </p>
 
         <div className="flex gap-4 justify-center">
@@ -176,7 +223,6 @@ export default function GatekeeperScreen({ onYes, onNo }) {
           </motion.button>
         </div>
 
-        {/* Bottom decorative */}
         <motion.p
           className="mt-6 text-sm"
           style={{
