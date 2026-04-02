@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import FloatingLoveText from './FloatingLoveText';
+import HightechTerminal from './HightechTerminal';
 
 export default function GatekeeperScreen({ onYes, onNo }) {
   return (
@@ -50,6 +51,8 @@ export default function GatekeeperScreen({ onYes, onNo }) {
 
       {/* ★ Full-intensity floating love text */}
       <FloatingLoveText baseOpacity={1.0} zIndex={8} />
+
+      <HightechTerminal />
 
       {/* Central modal */}
       <motion.div

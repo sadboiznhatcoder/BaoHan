@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FloatingLoveText from './FloatingLoveText';
+import HightechTerminal from './HightechTerminal';
 
 const CUTE_ERRORS = [
   'Sai rồi bé ơi~ Thử lại nha 🥺💕',
@@ -99,6 +100,8 @@ export default function AuthForm({ onSuccess, onFail }) {
 
       {/* Floating love text background */}
       <FloatingLoveText baseOpacity={0.5} zIndex={8} />
+
+      <HightechTerminal />
 
       {/* Ambient orbs */}
       <motion.div
