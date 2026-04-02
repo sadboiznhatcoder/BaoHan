@@ -21,7 +21,7 @@ const ITEMS = Array.from({ length: COUNT }, (_, i) => ({
   text: PHRASES[i % PHRASES.length],
   left: `${sr(i * 7) * 100}%`,
   fontSize: `${13 + sr(i * 7 + 1) * 16}px`,
-  rawOpacity: sr(i * 7 + 2),  // 0–1, will be scaled by baseOpacity
+  rawOpacity: sr(i * 7 + 2),  // 0–1, will be scaled by opacity prop
   duration: `${10 + sr(i * 7 + 3) * 15}s`,
   delay: `${-(sr(i * 7 + 4) * 20)}s`,
   hue: 320 + sr(i * 7 + 5) * 40,
@@ -65,19 +65,19 @@ function injectCSS() {
 /**
  * Reusable 750Hz GPU-accelerated floating love text background.
  *
- * @param {{ baseOpacity?: number, zIndex?: number }} props
- *   - baseOpacity: scales the opacity of all 150 items (default 1.0).
- *     e.g. 0.08 for a faint watermark, 1.0 for full intensity.
+ * @param {{ opacity?: number, zIndex?: number }} props
+ *   - opacity: scales the opacity of all 150 items (default 0.5).
+ *     e.g. 0.06 for a faint watermark, 0.5 for auth background.
  *   - zIndex: CSS z-index of the layer (default 8).
  */
-export default function FloatingLoveText({ baseOpacity = 1.0, zIndex = 8 }) {
+export default function FloatingLoveText({ opacity = 0.5, zIndex = 8 }) {
   useMemo(() => injectCSS(), []);
 
   const els = useMemo(
     () =>
       ITEMS.map((it) => {
-        // Scale raw opacity (0–1) into the 0.2–0.6 range, then multiply by baseOpacity
-        const opacity = (0.2 + it.rawOpacity * 0.4) * baseOpacity;
+        // Scale raw opacity (0–1) into the 0.2–0.6 range, then multiply by opacity prop
+        const itemOpacity = (0.2 + it.rawOpacity * 0.4) * opacity;
         return (
           <div
             key={it.id}
@@ -85,7 +85,7 @@ export default function FloatingLoveText({ baseOpacity = 1.0, zIndex = 8 }) {
             style={{
               left: it.left,
               fontSize: it.fontSize,
-              opacity,
+              opacity: itemOpacity,
               color: `hsl(${it.hue}, 80%, ${it.lightness}%)`,
               '--dur': it.duration,
               '--del': it.delay,
@@ -95,7 +95,7 @@ export default function FloatingLoveText({ baseOpacity = 1.0, zIndex = 8 }) {
           </div>
         );
       }),
-    [baseOpacity]
+    [opacity]
   );
 
   return <div className="flt-layer" style={{ zIndex }}>{els}</div>;

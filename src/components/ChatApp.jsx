@@ -160,7 +160,7 @@ export default function ChatApp() {
       animate={{ opacity: 1 }}
     >
       {/* Faint dreamy floating text watermark */}
-      <FloatingLoveText baseOpacity={0.08} zIndex={1} />
+      <FloatingLoveText opacity={0.06} zIndex={1} />
 
       {/* Header */}
       <motion.div
