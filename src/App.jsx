@@ -13,12 +13,19 @@ import './index.css';
 function App() {
   const [phase, setPhase] = useState('portal');
 
+  // Cursor/click effect mode: 'gay' on linktree portal, 'love' everywhere else
+  const effectMode = phase === 'portal' ? 'gay' : 'love';
+
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {/* Global effects - active in all phases */}
-      {phase !== 'angry' && phase !== 'portal' && <FloatingHearts />}
-      <CursorTrail />
-      <ClickBurst />
+      {/* FloatingHearts — ONLY in auth/chat phases, never on portal */}
+      {(phase === 'auth' || phase === 'chat') && <FloatingHearts />}
+
+      {/* Cursor trail — gay mode on portal, love mode on auth/chat */}
+      {phase !== 'angry' && <CursorTrail mode={effectMode} />}
+
+      {/* Click burst — gay mode on portal, love mode on auth/chat */}
+      {phase !== 'angry' && <ClickBurst mode={effectMode} />}
 
       {/* Phase rendering */}
       <AnimatePresence mode="wait">

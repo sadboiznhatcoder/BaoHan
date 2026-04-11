@@ -215,76 +215,171 @@ function GlassLinkButton({ label, Icon, href, action, featured, index, onUnlock 
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MESH GRADIENT BACKGROUND — Pure CSS animated blobs
+   HOLOGRAPHIC AURORA BACKGROUND — Ultra-Premium Animated Mesh
+   Multi-layered: base gradient + 6 organic blobs + shimmer +
+   prismatic overlay + noise texture
    ═══════════════════════════════════════════════════════════════ */
-function MeshBackground() {
+function HolographicAurora() {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      {/* base pastel wash */}
+      {/* Layer 0 — Deep holographic base gradient with slow colour shift */}
       <div
         className="absolute inset-0"
         style={{
-          background:
-            'linear-gradient(135deg, #e0e7ff 0%, #dbeafe 20%, #d1fae5 40%, #ede9fe 60%, #fce7f3 80%, #e0e7ff 100%)',
+          background: `
+            linear-gradient(
+              135deg,
+              hsl(210, 80%, 90%) 0%,
+              hsl(240, 60%, 92%) 10%,
+              hsl(175, 55%, 88%) 22%,
+              hsl(270, 50%, 91%) 35%,
+              hsl(330, 50%, 90%) 48%,
+              hsl(195, 60%, 87%) 60%,
+              hsl(155, 50%, 88%) 72%,
+              hsl(260, 55%, 90%) 85%,
+              hsl(210, 80%, 90%) 100%
+            )`,
+          backgroundSize: '400% 400%',
+          animation: 'aurora-shift 25s ease-in-out infinite',
         }}
       />
 
-      {/* animated gradient blobs */}
-      <motion.div
+      {/* Blob 1 — Baby blue — large, slow drift */}
+      <div
         className="absolute rounded-full"
         style={{
-          width: '55vmax',
-          height: '55vmax',
-          background: 'radial-gradient(circle, rgba(147,197,253,0.6) 0%, transparent 70%)',
-          top: '-20%',
-          left: '-10%',
-          filter: 'blur(60px)',
-          willChange: 'transform',
-        }}
-        animate={{ x: [0, 80, 0], y: [0, 40, 0], scale: [1, 1.1, 1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: '50vmax',
-          height: '50vmax',
-          background: 'radial-gradient(circle, rgba(167,243,208,0.5) 0%, transparent 70%)',
-          bottom: '-15%',
-          right: '-10%',
-          filter: 'blur(70px)',
-          willChange: 'transform',
-        }}
-        animate={{ x: [0, -60, 0], y: [0, -50, 0], scale: [1, 1.15, 1] }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: '45vmax',
-          height: '45vmax',
-          background: 'radial-gradient(circle, rgba(196,181,253,0.45) 0%, transparent 70%)',
-          top: '30%',
-          left: '30%',
+          width: '65vmax',
+          height: '65vmax',
+          background: 'radial-gradient(circle, rgba(147,197,253,0.7) 0%, rgba(147,197,253,0.2) 35%, transparent 65%)',
+          top: '-28%',
+          left: '-18%',
           filter: 'blur(80px)',
+          animation: 'aurora-blob-1 18s ease-in-out infinite',
           willChange: 'transform',
         }}
-        animate={{ x: [0, -40, 30, 0], y: [0, 50, -20, 0], scale: [1, 1.08, 0.95, 1] }}
-        transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
       />
-      <motion.div
+
+      {/* Blob 2 — Mint green — organic figure drift */}
+      <div
         className="absolute rounded-full"
         style={{
-          width: '35vmax',
-          height: '35vmax',
-          background: 'radial-gradient(circle, rgba(253,186,210,0.35) 0%, transparent 70%)',
-          top: '10%',
-          right: '15%',
-          filter: 'blur(60px)',
+          width: '58vmax',
+          height: '58vmax',
+          background: 'radial-gradient(circle, rgba(167,243,208,0.65) 0%, rgba(167,243,208,0.15) 35%, transparent 65%)',
+          bottom: '-22%',
+          right: '-14%',
+          filter: 'blur(90px)',
+          animation: 'aurora-blob-2 22s ease-in-out infinite',
           willChange: 'transform',
         }}
-        animate={{ x: [0, 50, -30, 0], y: [0, -30, 40, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      {/* Blob 3 — Soft lavender — figure-eight */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: '52vmax',
+          height: '52vmax',
+          background: 'radial-gradient(circle, rgba(196,181,253,0.6) 0%, rgba(196,181,253,0.12) 35%, transparent 65%)',
+          top: '22%',
+          left: '22%',
+          filter: 'blur(100px)',
+          animation: 'aurora-blob-3 26s ease-in-out infinite',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* Blob 4 — Soft peach/rose — gentle sway */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: '48vmax',
+          height: '48vmax',
+          background: 'radial-gradient(circle, rgba(253,186,210,0.5) 0%, rgba(253,186,210,0.12) 35%, transparent 65%)',
+          top: '3%',
+          right: '8%',
+          filter: 'blur(75px)',
+          animation: 'aurora-blob-4 20s ease-in-out infinite',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* Blob 5 — Ethereal cyan — circular drift */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: '44vmax',
+          height: '44vmax',
+          background: 'radial-gradient(circle, rgba(165,243,252,0.45) 0%, rgba(165,243,252,0.08) 40%, transparent 65%)',
+          bottom: '8%',
+          left: '8%',
+          filter: 'blur(85px)',
+          animation: 'aurora-blob-5 24s ease-in-out infinite',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* Blob 6 — Warm lilac — adds depth in centre */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: '38vmax',
+          height: '38vmax',
+          background: 'radial-gradient(circle, rgba(221,204,255,0.4) 0%, rgba(221,204,255,0.08) 40%, transparent 65%)',
+          top: '40%',
+          left: '45%',
+          filter: 'blur(90px)',
+          animation: 'aurora-blob-6 28s ease-in-out infinite',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* Holographic shimmer overlay — diagonal sweep */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            repeating-linear-gradient(
+              120deg,
+              transparent 0%,
+              rgba(255, 255, 255, 0.04) 1.5%,
+              transparent 3%
+            )`,
+          backgroundSize: '200% 200%',
+          animation: 'aurora-shimmer 10s linear infinite',
+          mixBlendMode: 'overlay',
+        }}
+      />
+
+      {/* Prismatic colour wash — slow counter-rotating mesh */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            conic-gradient(
+              from 0deg at 50% 50%,
+              rgba(147,197,253,0.12) 0deg,
+              rgba(196,181,253,0.10) 60deg,
+              rgba(167,243,208,0.08) 120deg,
+              rgba(253,186,210,0.10) 180deg,
+              rgba(165,243,252,0.08) 240deg,
+              rgba(221,204,255,0.10) 300deg,
+              rgba(147,197,253,0.12) 360deg
+            )`,
+          animation: 'aurora-prismatic 30s linear infinite',
+          mixBlendMode: 'soft-light',
+          opacity: 0.6,
+        }}
+      />
+
+      {/* Subtle noise texture for organic depth */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.022,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: '128px 128px',
+        }}
       />
     </div>
   );
@@ -331,8 +426,8 @@ export default function LinktreePortal({ onUnlock }) {
       transition={{ duration: 0.4 }}
       onClick={handleGlobalClick}
     >
-      {/* ── Mesh Gradient Background ── */}
-      <MeshBackground />
+      {/* ── Holographic Aurora Background ── */}
+      <HolographicAurora />
 
       {/* ── Main Content Card ── */}
       <div className="relative z-10 flex flex-col items-center w-full max-w-md px-6 pt-14 sm:pt-20 pb-12">
