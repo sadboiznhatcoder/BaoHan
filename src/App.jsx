@@ -3,30 +3,29 @@ import { AnimatePresence } from 'framer-motion';
 import FloatingHearts from './components/FloatingHearts';
 import CursorTrail from './components/CursorTrail';
 import ClickBurst from './components/ClickBurst';
-import GatekeeperScreen from './components/GatekeeperScreen';
+import LinktreePortal from './components/LinktreePortal';
 import AngryScreen from './components/AngryScreen';
 import AuthForm from './components/AuthForm';
 import ChatApp from './components/ChatApp';
 import './index.css';
 
-// Phases: 'gatekeeper' | 'auth' | 'chat' | 'angry'
+// Phases: 'portal' | 'auth' | 'chat' | 'angry'
 function App() {
-  const [phase, setPhase] = useState('gatekeeper');
+  const [phase, setPhase] = useState('portal');
 
   return (
     <div className="relative w-full h-full overflow-hidden">
       {/* Global effects - active in all phases */}
-      {phase !== 'angry' && <FloatingHearts />}
+      {phase !== 'angry' && phase !== 'portal' && <FloatingHearts />}
       <CursorTrail />
       <ClickBurst />
 
       {/* Phase rendering */}
       <AnimatePresence mode="wait">
-        {phase === 'gatekeeper' && (
-          <GatekeeperScreen
-            key="gatekeeper"
-            onYes={() => setPhase('auth')}
-            onNo={() => setPhase('angry')}
+        {phase === 'portal' && (
+          <LinktreePortal
+            key="portal"
+            onUnlock={() => setPhase('auth')}
           />
         )}
 
