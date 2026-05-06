@@ -16,20 +16,23 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black text-white font-['Inter']">
+      {/* Global Interactive Effects Layer */}
       <div className="absolute inset-0 z-50 pointer-events-none">
         {phase !== 'angry' && <CursorTrail />}
         {phase !== 'angry' && <ClickBurst />}
       </div>
 
+      {/* GLOBAL BACKGROUND AMBIENCE */}
       <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-        {/* Render love texts globally EXCEPT on angry screen */}
+        {/* FALLING TEXT: Now shows on all phases except angry */}
         {phase !== 'angry' && <FloatingLoveText />}
         
-        {/* Other specific phase effects */}
+        {/* Phase-specific background effects */}
         {phase === 'intro' && <FloatingFlowers />}
         {(phase === 'auth' || phase === 'chat') && <FloatingHearts />}
       </div>
 
+      {/* Main Content Router */}
       <div className="relative z-20 w-full h-full overflow-y-auto">
         <AnimatePresence mode="wait">
           {phase === 'intro' && <IntroLanding key="intro" onEnterAI={() => setPhase('auth')} />}
