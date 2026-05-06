@@ -91,24 +91,27 @@ export default function IntroLanding({ onEnterAI }) {
               { icon: MessageCircle, name: 'Threads', link: 'https://www.threads.com/@_baobaohan_?igshid=NTc4MTIwNjQ2YQ==' },
               { icon: Facebook, name: 'Facebook', link: 'https://www.facebook.com/bhnnnn0803?locale=vi_VN' },
               { icon: Instagram, name: 'Instagram', link: 'https://www.instagram.com/_baobaohan_' }
-            ].map((social, idx) => (
-              <motion.a
-                key={social.name}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="liquid-glass rounded-2xl p-8 flex flex-col items-center justify-center gap-4 hover:bg-white/5 transition-all group"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-              >
-                <div className="p-4 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                  <social.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
-                </div>
-                <span className="font-['Inter'] font-medium text-white/90">{social.name}</span>
-              </motion.a>
-            ))}
+            ].map((social, idx) => {
+              const Icon = social.icon;
+              return (
+                <motion.a
+                  key={social.name}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="liquid-glass rounded-2xl p-8 flex flex-col items-center justify-center gap-4 group transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(255,192,203,0.1)] hover:bg-white/5"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                >
+                  <div className="p-4 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                    <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+                  </div>
+                  <span className="font-['Inter'] font-medium text-white/90">{social.name}</span>
+                </motion.a>
+              );
+            })}
           </div>
         </div>
 
