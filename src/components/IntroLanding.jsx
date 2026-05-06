@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Facebook, Instagram, MessageCircle, Video } from 'lucide-react';
+import { Globe, Camera, MessageCircle, Video } from 'lucide-react';
 import FadingVideo from './FadingVideo';
 
 export default function IntroLanding({ onEnterAI }) {
@@ -89,8 +89,8 @@ export default function IntroLanding({ onEnterAI }) {
             {[
               { icon: Video, name: 'TikTok', link: 'https://www.tiktok.com/@bhdepgaii?_r=1&_t=ZS-968vs6AMTA4' },
               { icon: MessageCircle, name: 'Threads', link: 'https://www.threads.com/@_baobaohan_?igshid=NTc4MTIwNjQ2YQ==' },
-              { icon: Facebook, name: 'Facebook', link: 'https://www.facebook.com/bhnnnn0803?locale=vi_VN' },
-              { icon: Instagram, name: 'Instagram', link: 'https://www.instagram.com/_baobaohan_' }
+              { icon: Globe, name: 'Facebook', link: 'https://www.facebook.com/bhnnnn0803?locale=vi_VN' },
+              { icon: Camera, name: 'Instagram', link: 'https://www.instagram.com/_baobaohan_' }
             ].map((social, idx) => {
               const Icon = social.icon;
               return (
