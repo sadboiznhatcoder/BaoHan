@@ -151,16 +151,11 @@ export default function ChatApp() {
 
   return (
     <motion.div
-      className="fixed inset-0 flex flex-col"
-      style={{
-        zIndex: 50,
-        background: 'linear-gradient(135deg, #1a0011 0%, #2d0a1f 30%, #1a0025 60%, #0d001a 100%)',
-      }}
+      className="relative w-full h-full flex flex-col"
+      style={{ zIndex: 50 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* Faint dreamy floating text watermark */}
-      <FloatingLoveText opacity={0.06} zIndex={1} />
 
       {/* Header */}
       <motion.div

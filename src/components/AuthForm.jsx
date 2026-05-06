@@ -82,37 +82,11 @@ export default function AuthForm({ onSuccess, onFail }) {
 
   return (
     <motion.div
-      className="fixed inset-0 flex items-center justify-center p-4"
-      style={{ zIndex: 50 }}
+      className="w-full flex items-center justify-center p-4 relative z-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {/* Background */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(135deg, #1a0011 0%, #2d0a1f 30%, #1a0025 60%, #0d001a 100%)',
-        }}
-      />
-
-      {/* Floating love text background */}
-      <FloatingLoveText opacity={0.4} zIndex={8} />
-
-      {/* Ambient orbs */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 250,
-          height: 250,
-          background: 'radial-gradient(circle, rgba(236,72,153,0.12), transparent)',
-          top: '15%',
-          right: '20%',
-          filter: 'blur(60px)',
-        }}
-        animate={{ x: [0, 60, 0], y: [0, -40, 0] }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
 
       <motion.div
         className="relative glass-strong rounded-3xl p-6 sm:p-8 w-full max-w-md overflow-y-auto"

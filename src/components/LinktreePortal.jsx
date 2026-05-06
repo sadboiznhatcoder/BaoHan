@@ -414,7 +414,7 @@ export default function LinktreePortal({ onUnlock }) {
 
   return (
     <motion.div
-      className="fixed inset-0 flex flex-col items-center overflow-y-auto overflow-x-hidden"
+      className="relative w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden"
       style={{
         paddingBottom: 'env(safe-area-inset-bottom, 24px)',
         paddingTop: 'env(safe-area-inset-top, 0px)',
@@ -426,8 +426,7 @@ export default function LinktreePortal({ onUnlock }) {
       transition={{ duration: 0.4 }}
       onClick={handleGlobalClick}
     >
-      {/* ── Holographic Aurora Background ── */}
-      <HolographicAurora />
+
 
       {/* ── Main Content Card ── */}
       <div className="relative z-10 flex flex-col items-center w-full max-w-md px-6 pt-14 sm:pt-20 pb-12">
