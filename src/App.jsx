@@ -22,7 +22,11 @@ export default function App() {
       </div>
 
       <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-        {phase === 'intro' && <><FloatingFlowers /><FloatingLoveText /></>}
+        {/* Render love texts globally EXCEPT on angry screen */}
+        {phase !== 'angry' && <FloatingLoveText />}
+        
+        {/* Other specific phase effects */}
+        {phase === 'intro' && <FloatingFlowers />}
         {(phase === 'auth' || phase === 'chat') && <FloatingHearts />}
       </div>
 
