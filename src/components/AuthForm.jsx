@@ -22,7 +22,6 @@ export default function AuthForm({ onSuccess, onFail }) {
     birthday: '',
     phone: '',
     nickname: '',
-    handsome: '',
   });
   const [attempts, setAttempts] = useState(3);
   const [error, setError] = useState('');
@@ -34,7 +33,7 @@ export default function AuthForm({ onSuccess, onFail }) {
   };
 
   const validate = () => {
-    const { birthday, phone, nickname, handsome } = answers;
+    const { birthday, phone, nickname } = answers;
 
     // Validate birthday: must be 08/03/2009
     if (birthday !== '08/03/2009') return false;
@@ -44,10 +43,6 @@ export default function AuthForm({ onSuccess, onFail }) {
 
     // Validate nickname (auto-capitalize, compare uppercase)
     if (nickname.toUpperCase().trim() !== 'TINA') return false;
-
-    // Validate handsome (auto-uppercase, remove accents)
-    const cleaned = removeAccents(handsome.toUpperCase().trim());
-    if (cleaned !== 'VO MINH NHAT') return false;
 
     return true;
   };
@@ -208,25 +203,6 @@ export default function AuthForm({ onSuccess, onFail }) {
             />
           </motion.div>
 
-          {/* Q4: Who's most handsome */}
-          <motion.div
-            initial={{ x: -30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <label className="block text-sm font-medium text-pink-300/80 mb-1.5">
-              👑 Ai đẹp trai nhất thế giới? <span className="text-xs font-normal text-pink-300/60 ml-1 block mt-1">(cả họ và tên ghi hoa không dấu)</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Nhập câu trả lời..."
-              value={answers.handsome}
-              onChange={e => handleChange('handsome', e.target.value.toUpperCase())}
-              className={`w-full px-4 py-3.5 rounded-xl text-base ${inputFocusClass} transition-all duration-200 uppercase`}
-              style={inputStyle}
-              autoCapitalize="characters"
-            />
-          </motion.div>
 
           {/* Error message */}
           <AnimatePresence>
