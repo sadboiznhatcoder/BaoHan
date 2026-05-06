@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import FloatingFlowers from './components/FloatingFlowers';
 import IntroLanding from './components/IntroLanding';
 import AuthForm from './components/AuthForm';
 import ChatApp from './components/ChatApp';
@@ -11,12 +10,7 @@ export default function App() {
   const [phase, setPhase] = useState('intro'); // 'intro', 'auth', 'chat', 'angry'
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#050510] text-white font-['Barlow']">
-      {/* Global Floral Animation */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <FloatingFlowers />
-      </div>
-
+    <div className="relative w-full h-screen overflow-hidden bg-black text-white font-['Inter']">
       <div className="relative z-20 w-full h-full overflow-y-auto">
         <AnimatePresence mode="wait">
           {phase === 'intro' && (
